@@ -4,7 +4,7 @@
 
 ---
 
-##  Overview
+## Overview
 
 Spatial transcriptomics is a revolutionary technology that enables the measurement of gene expression while preserving the spatial location of cells within tissue.
 
@@ -19,7 +19,7 @@ This repository presents a **complete end-to-end spatial transcriptomics pipelin
 
 ---
 
-##  Objectives
+## Objectives
 
 * Perform spatial transcriptomics analysis using **Scanpy** and **Squidpy**
 * Analyze **Visium datasets (fluorescence + H&E imaging)**
@@ -28,7 +28,7 @@ This repository presents a **complete end-to-end spatial transcriptomics pipelin
 
 ---
 
-##  Tools & Technologies
+## Tools & Technologies
 
 | Tool       | Purpose                                                  |
 | ---------- | -------------------------------------------------------- |
@@ -58,79 +58,122 @@ This repository presents a **complete end-to-end spatial transcriptomics pipelin
 ## Key Workflows
 
 ### 1️⃣ Scanpy Spatial Basics
-
 * Preprocessing and clustering
 * UMAP visualization
 * Spatial mapping of clusters
 
 ### 2️⃣ Visium Fluorescence (Squidpy)
-
 * Spatial neighbor graph
 * Fluorescence image integration
 * Spatial statistics
 
 ### 3️⃣ Visium H&E Analysis
-
 * Histology image integration
 * Gene expression overlay on tissue
 * Morphology vs expression
 
 ### 4️⃣ Xenium Analysis
-
 * High-resolution spatial transcriptomics
 * Cell-level / subcellular resolution
 * Advanced spatial mapping
+* Neighborhood enrichment & Moran's I autocorrelation
 
 ---
 
 ## 📊 Key Results & Visual Insights
 
 ### 🔹 1. UMAP Clustering (Global Gene Expression Structure)
-
-👉 From **Scanpy module**
+👉 From **Scanpy module** — Human Lymph Node · ~4,000 spots
 
 <img width="709" height="185" alt="umap,scanpy" src="https://github.com/user-attachments/assets/58fddc7f-a947-4971-af85-44f3ca10f3e1" />
 
 📌 **Insight:**
-Cells cluster based on gene expression profiles, revealing distinct biological populations.
+Cells cluster based on gene expression profiles, revealing distinct biological populations across the tissue.
 
 ---
 
 ### 🔹 2. Spatial Cluster Mapping on Tissue
+👉 From **Visium H&E module** — Mouse Brain · ~2,700 spots
 
-👉 From **Visium H&E 
 <img width="890" height="166" alt="spatial_cluster h e" src="https://github.com/user-attachments/assets/67d9ba2f-ca1a-4d6b-8953-01f53a1c4241" />
+
+📌 **Insight:**
+Clusters are not random — they align with **physical regions of the tissue**, showing spatial organization of biology. Key spatially variable gene: *Olfm1* (Moran's I = 0.76).
+
+---
+
+### 🔹 3. Xenium — High-Resolution Spatial Cluster Map
+👉 From **Xenium module** — Human Lung Cancer · ~161,000 cells
+
+<img width="358" height="171" alt="spatial_cluster_X" src="https://github.com/user-attachments/assets/74d464c8-d535-493a-aeec-eead7f8ac5d3" />
 
 
 📌 **Insight:**
-Clusters are not random — they align with **physical regions of the tissue**, showing spatial organization of biology.
-
-
-### 🔹 3. High-Resolution Xenium Spatial Map
-
- From **Xenium module**
-
-
-
- **Insight:**
-Unlike Visium (spot-based), Xenium provides **near single-cell resolution**, enabling precise spatial localization of gene expression.
+Unlike Visium (spot-based, ~55 µm resolution), Xenium operates at **near single-cell resolution** across 161,000 cells, enabling precise spatial localization of distinct tumor and stromal compartments.
 
 ---
 
-##  Key Concepts Learned
+### 🔹 4. Xenium — UMAP with Leiden Clusters
+👉 From **Xenium module** — Human Lung Cancer · 480-gene targeted panel
+
+<img width="843" height="230" alt="UMAP_Total Counts   Leiden Clusters_X" src="https://github.com/user-attachments/assets/3a753a0e-6ebd-4766-b427-53e185234d34" />
+
+
+
+📌 **Insight:**
+UMAP colored by total counts and Leiden clusters reveals the transcriptional diversity captured even within a targeted 480-gene panel, with each cluster corresponding to a distinct spatial tissue compartment.
+
+---
+
+### 🔹 5. Xenium — Neighborhood Enrichment Heatmap
+👉 From **Xenium module** — Spatial co-localization analysis
+
+<img width="632" height="230" alt="Neighborhood Enrichment Heatmap + Spatial Reference_X " src="https://github.com/user-attachments/assets/4bcb52b8-8ec4-40f6-be36-3ae7dfc7874b" />
+
+
+📌 **Insight:**
+Z-score permutation testing reveals which Leiden clusters are spatially co-localized. Strong diagonal values indicate cluster self-enrichment; off-diagonal patterns highlight meaningful cross-cluster proximity — key for understanding tumor microenvironment organization.
+
+---
+
+### 📋 Top Spatially Variable Genes — Xenium (Moran's I)
+
+| Gene   | Moran's I | Biological Role              |
+|--------|-----------|------------------------------|
+| AREG   | 0.696     | Amphiregulin — tumor growth  |
+| MET    | 0.683     | Receptor tyrosine kinase     |
+| ANXA1  | 0.667     | Inflammation regulator       |
+| EPCAM  | 0.633     | Epithelial marker            |
+| DMBT1  | 0.588     | Tumor suppressor             |
+
+---
+
+## Technology Comparison
+
+| Feature        | Visium (Scanpy)     | Visium Fluo (Squidpy) | Visium H&E (Squidpy) | Xenium (Squidpy)       |
+|----------------|---------------------|-----------------------|----------------------|------------------------|
+| Resolution     | Spot (~55 µm)       | Spot (~55 µm)         | Spot (~55 µm)        | Single-cell            |
+| Genes          | Whole transcriptome | Whole transcriptome   | Whole transcriptome  | Targeted panel (480)   |
+| Image          | H&E                 | Fluorescence (3-ch)   | H&E                  | Morphology             |
+| Cells/Spots    | ~4,000              | ~700 (crop)           | ~2,700               | ~161,000               |
+| Tissue         | Human Lymph Node    | Mouse Brain           | Mouse Brain          | Human Lung Cancer      |
+| Key Gene       | CR2                 | —                     | Olfm1 (I=0.76)       | AREG (I=0.70)          |
+
+---
+
+## Key Concepts Learned
 
 * Spatial clustering of cells
-* Spatially variable genes
-* Neighborhood graph construction
+* Spatially variable genes (Moran's I autocorrelation)
+* Neighborhood graph construction & enrichment analysis
 * Integration of gene expression with tissue images
-* High-resolution spatial transcriptomics
+* High-resolution single-cell spatial transcriptomics
 
 ---
 
-##  Repository Structure
+## 📁 Repository Structure
 
 ```
-## 📁 Repository Structure
 
 spatial-transcriptomics/
 ├── 01-scanpy_spatial/
@@ -178,19 +221,19 @@ spatial-transcriptomics/
 
 ---
 
-##  Installation & Setup
+## Installation & Setup
 
 ```bash
 pip install scanpy squidpy anndata matplotlib
 ```
 
 ```bash
-jupyter notebook
+colab notebook
 ```
 
 ---
 
-##  How to Run
+## How to Run
 
 1. Open each module folder
 2. Run the notebook step-by-step
@@ -198,7 +241,7 @@ jupyter notebook
 
 ---
 
-##  Future Work
+## Future Work
 
 * Integration with machine learning models
 * Cell–cell communication analysis
@@ -215,13 +258,11 @@ jupyter notebook
 
 ---
 
-##  Final Note
+## Final Note
 
-This project demonstrates how combining **gene expression + spatial context + imaging** provides deeper biological insight than traditional methods.
+This project demonstrates how combining **gene expression + spatial context + imaging** provides deeper biological insight than traditional methods — from spot-level Visium to single-cell resolution Xenium.
 
 ---
 
 ## Author
 Syeda Momina
-
----
