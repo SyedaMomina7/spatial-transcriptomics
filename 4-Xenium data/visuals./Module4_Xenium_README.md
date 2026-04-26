@@ -1,8 +1,8 @@
-# 🧬 Module 4: Spatial Transcriptomics with Xenium In Situ Data (Squidpy + SpatialData)
+#  Module 4: Spatial Transcriptomics with Xenium In Situ Data (Squidpy + SpatialData)
 
 ---
 
-## 🎯 Objective
+##  Objective
 
 This module demonstrates the analysis of **10x Genomics Xenium in situ transcriptomics data** using Squidpy integrated with the SpatialData framework.
 
@@ -17,7 +17,7 @@ This allows us to study **how individual cells are spatially organized within hu
 
 ---
 
-## 📦 Dataset Overview
+##  Dataset Overview
 
 We use the **10x Genomics Xenium Human Lung Cancer dataset** (`Xenium_V1_human_Lung_2fov`), downloaded directly from 10x Genomics.
 
@@ -35,7 +35,7 @@ We use the **10x Genomics Xenium Human Lung Cancer dataset** (`Xenium_V1_human_L
 
 ---
 
-## 🔄 Workflow Overview
+##  Workflow Overview
 
 ```
 Download Dataset (wget → unzip)
@@ -89,7 +89,7 @@ import squidpy as sq
 
 ---
 
-# 📥 STEP 1 — Download & Load Data
+#  STEP 1 — Download & Load Data
 
 The Xenium dataset is downloaded directly from 10x Genomics and extracted into the working directory:
 
@@ -132,7 +132,7 @@ Cell spatial coordinates are stored in `adata.obsm["spatial"]` as (x, y) pairs �
 
 ---
 
-# 📊 STEP 2 — Quality Control
+#  STEP 2 — Quality Control
 
 We compute the fraction of control probe and control codeword detections — these are spike-in negative controls that should be near zero in a high-quality Xenium run:
 
@@ -147,7 +147,7 @@ print(f"Negative DNA probe count % : {cprobes}")
 print(f"Negative decoding count % : {cwords}")
 ```
 
-Expected output:
+output:
 ```
 Negative DNA probe count % : ~0.005%
 Negative decoding count % : ~0.003%
@@ -157,11 +157,10 @@ Near-zero values confirm **very low background noise** — the Xenium assay is h
 
 ---
 
-## 📸 VISUAL 1 — QC Distributions (4-Panel Histogram)
+## 📸 VISUAL 1 — QC Distributions 
 
-> 🖼️ **UPLOAD YOUR IMAGE HERE**
-> Run the block below, save the matplotlib figure, and upload it.
-> **Suggested filename:** `qc_distributions_xenium.png`
+<img width="900" height="450" alt="QC_distributions_histogram_X" src="https://github.com/user-attachments/assets/90fd82e7-9f7b-4a9f-b554-5e95f4fd6e58" /> 
+
 
 ```python
 fig, axs = plt.subplots(1, 4, figsize=(15, 4))
@@ -194,7 +193,7 @@ sns.histplot(
 
 ---
 
-# 🧹 STEP 3 — Filtering & Normalization
+#  STEP 3 — Filtering & Normalization
 
 Based on the QC plots, we remove low-quality cells and rarely-detected genes:
 
@@ -216,7 +215,7 @@ sc.pp.log1p(adata)                         # Log-transform to stabilize variance
 
 ---
 
-# 🔬 STEP 4 — Dimensionality Reduction & Leiden Clustering
+#  STEP 4 — Dimensionality Reduction & Leiden Clustering
 
 ```python
 sc.pp.pca(adata)         # Reduce 480 genes → principal components
@@ -229,11 +228,11 @@ This standard Scanpy pipeline compresses the 480-dimensional gene space into a 2
 
 ---
 
-## 📸 VISUAL 2 — UMAP: Total Counts & Leiden Clusters
+## 📸 VISUAL 2 — UMAP Total Counts & Leiden Clusters
 
-> 🖼️ **UPLOAD YOUR IMAGE HERE**
-> Run `sc.pl.umap(...)` and save the output.
-> **Suggested filename:** `umap_leiden_xenium.png`
+<img width="900" height="450" alt="UMAP_Total Counts   Leiden Clusters_X" src="https://github.com/user-attachments/assets/8d8d16f3-7530-4ca1-bc14-f6780fc7c8bb" />
+
+
 
 ```python
 sc.pl.umap(
@@ -251,9 +250,8 @@ sc.pl.umap(
 
 ## 📸 VISUAL 3 — Spatial Scatter: Leiden Clusters in Tissue
 
-> 🖼️ **UPLOAD YOUR IMAGE HERE**
-> Run `sq.pl.spatial_scatter(adata, ...)` and save the output.
-> **Suggested filename:** `spatial_leiden_xenium.png`
+<img width="900" height="450" alt="spatial_cluster_X" src="https://github.com/user-attachments/assets/e6e509ed-d8bf-4931-a9d6-14f502fb5c30" />
+
 
 ```python
 sq.pl.spatial_scatter(
@@ -269,7 +267,7 @@ sq.pl.spatial_scatter(
 
 ---
 
-# 🕸️ STEP 5 — Build Spatial Neighborhood Graph
+#  STEP 5 — Build Spatial Neighborhood Graph
 
 All spatial statistics require a connectivity graph that defines which cells are neighbors. We build this from spatial coordinates using Delaunay triangulation:
 
@@ -283,7 +281,7 @@ The graph is stored in `adata.obsp["spatial_connectivities"]` and used by Steps 
 
 ---
 
-# 📐 STEP 6 — Centrality Scores
+#  STEP 6 — Centrality Scores
 
 Centrality scores describe the **topological role of each cluster** in the spatial neighborhood graph — are cells of this type central hubs of the tissue, or spatially isolated?
 
@@ -302,15 +300,15 @@ sq.pl.centrality_scores(adata, cluster_key="leiden", figsize=(16, 5))
 
 ## 📸 VISUAL 4 — Centrality Scores per Leiden Cluster
 
-> 🖼️ **UPLOAD YOUR IMAGE HERE**
-> Run `sq.pl.centrality_scores(...)` and save the output.
-> **Suggested filename:** `centrality_scores_xenium.png`
+
+<img width="900" height="450" alt="Centrality Scores per Leiden Cluster_X" src="https://github.com/user-attachments/assets/517715b1-f7a9-49df-b209-28532adad4da" />
+
 
 📌 **Insight:** Clusters with high **closeness centrality** are likely stromal or immune cell types that act as **spatial hubs** — bridging different tissue compartments. Clusters with high **clustering coefficient** form tight, cohesive patches — characteristic of tumor nests, lymphoid follicles, or glandular structures.
 
 ---
 
-# 🔁 STEP 7 — Co-occurrence Probability
+#  STEP 7 — Co-occurrence Probability
 
 The co-occurrence score answers: **"Given that cluster X is present at a location, how much more (or less) likely is cluster Y to appear within radius r?"**
 
@@ -348,9 +346,8 @@ sq.pl.spatial_scatter(
 
 ## 📸 VISUAL 5 — Co-occurrence Probability: Cluster 12 vs All Clusters
 
-> 🖼️ **UPLOAD YOUR IMAGE HERE**
-> Run `sq.pl.co_occurrence(..., clusters="12")` and save the output.
-> **Suggested filename:** `co_occurrence_cluster12_xenium.png`
+<img width="270" height="188" alt="subsample cluster_X" src="https://github.com/user-attachments/assets/f24deac2-9606-4d7d-a9de-cef09eda0eb4" />
+
 
 📌 **Insight:** Each line in the plot is a different Leiden cluster. Lines rising above 1.0 at short radii indicate clusters **preferentially close to cluster 12** — these are its direct spatial interaction partners in the tumor microenvironment.
 
@@ -358,9 +355,9 @@ sq.pl.spatial_scatter(
 
 ## 📸 VISUAL 6 — Spatial Scatter: Subsampled Leiden Clusters
 
-> 🖼️ **UPLOAD YOUR IMAGE HERE**
-> Run `sq.pl.spatial_scatter(adata_subsample, color="leiden", ...)` and save the output.
-> **Suggested filename:** `spatial_scatter_subsample_xenium.png`
+
+<img width="900" height="450" alt="subsample cluster_X" src="https://github.com/user-attachments/assets/2dd9919d-3d3c-4886-90f4-6b8f7fae07ba" />
+
 
 📌 **Insight:** This is the spatial reference map for interpreting the co-occurrence plot. By comparing which clusters appear adjacent to cluster 12 on the tissue, you can visually validate the statistical co-occurrence signal — building biological intuition about shared microenvironmental niches.
 
@@ -396,9 +393,9 @@ sq.pl.spatial_scatter(adata_subsample, color="leiden", shape=None, size=2, ax=ax
 
 ## 📸 VISUAL 7 — Neighborhood Enrichment Heatmap + Spatial Reference
 
-> 🖼️ **UPLOAD YOUR IMAGE HERE**
-> Run the `fig, ax = plt.subplots(1, 2, ...)` block and save the combined figure.
-> **Suggested filename:** `nhood_enrichment_xenium.png`
+
+<img width="900" height="450" alt="Neighborhood Enrichment Heatmap + Spatial Reference_X " src="https://github.com/user-attachments/assets/df5043b0-a236-4a62-b041-ca051d0979d8" />
+
 
 📌 **Insight:**
 - **Warm colors (high positive z-scores)** → clusters that are significantly co-localized — likely **cell-cell interaction partners** (e.g., tumor cells and their associated macrophages or T cells).
@@ -446,9 +443,7 @@ adata_subsample.uns["moranI"].head(10)
 
 ## 📸 VISUAL 8 — Spatial Expression of Top Moran's I Genes (AREG & MET)
 
-> 🖼️ **UPLOAD YOUR IMAGE HERE**
-> Run `sq.pl.spatial_scatter(color=["AREG","MET"])` and save the output.
-> **Suggested filename:** `moran_genes_spatial_xenium.png`
+<img width="900" height="450" alt="image" src="https://github.com/user-attachments/assets/11cebf83-9af2-4688-814d-ae7a033d2291" />
 
 ```python
 sq.pl.spatial_scatter(
@@ -486,23 +481,11 @@ for name in gene_name:
     )
 ```
 
----
 
-## 📸 VISUAL 9 — AREG Expression on Morphology Image
-
-> 🖼️ **UPLOAD YOUR IMAGE HERE**
-> Run the `spatialdata_plot` loop, save the AREG figure.
-> **Suggested filename:** `areg_morphology_xenium.png`
+<img width="900" height="450" alt="image" src="https://github.com/user-attachments/assets/f19a400b-6222-481f-aba0-cd28aa3fd0cd" />
 
 📌 **Insight:** Overlaying AREG on the morphology image reveals **which anatomical structures express this tumor growth factor** — for example, glandular epithelial regions versus stromal areas. This is the defining advantage of Xenium: every expression value is physically anchored to a cell whose morphological context is directly visible.
 
----
-
-## 📸 VISUAL 10 — MET Expression on Morphology Image
-
-> 🖼️ **UPLOAD YOUR IMAGE HERE**
-> Run the `spatialdata_plot` loop, save the MET figure.
-> **Suggested filename:** `met_morphology_xenium.png`
 
 📌 **Insight:** MET focal high-expression regions on the morphology image can reveal areas of oncogenic amplification within the tumor. MET overexpression is a known driver of invasion and metastasis in lung cancer — its spatial pattern identifies which specific cells and tissue regions are most affected.
 
@@ -525,31 +508,9 @@ napari-spatialdata lets you:
 
 ---
 
-## 📸 VISUAL 11 — napari Interactive Viewer (AREG Expression)
-
-> 🖼️ **UPLOAD YOUR IMAGE HERE**
-> Take a screenshot of the napari viewer with AREG expression displayed across the tissue.
-> **Suggested filename:** `napari_areg_xenium.png`
+`
 
 📌 **Insight:** napari provides a "Google Maps"-style exploration experience for spatial omics data. The ability to zoom from a whole-tissue overview down to individual cell segmentation boundaries — with expression and transcript points overlaid — is essential for hypothesis generation and spatial validation at scale.
-
----
-
-# 🗂️ Complete Image Upload Checklist
-
-| # | Suggested Filename | Code Block to Run | Step |
-|---|---|---|---|
-| 1 | `qc_distributions_xenium.png` | `fig, axs = plt.subplots(1, 4, ...)` QC histogram block | Step 2 |
-| 2 | `umap_leiden_xenium.png` | `sc.pl.umap(color=["total_counts","leiden"])` | Step 4 |
-| 3 | `spatial_leiden_xenium.png` | `sq.pl.spatial_scatter(adata, color=["leiden"])` | Step 4 |
-| 4 | `centrality_scores_xenium.png` | `sq.pl.centrality_scores(adata, cluster_key="leiden", figsize=(16,5))` | Step 6 |
-| 5 | `co_occurrence_cluster12_xenium.png` | `sq.pl.co_occurrence(..., clusters="12", figsize=(10,10))` | Step 7 |
-| 6 | `spatial_scatter_subsample_xenium.png` | `sq.pl.spatial_scatter(adata_subsample, color="leiden", shape=None, size=2)` | Step 7 |
-| 7 | `nhood_enrichment_xenium.png` | `fig, ax = plt.subplots(1, 2, figsize=(13, 7))` combined block | Step 8 |
-| 8 | `moran_genes_spatial_xenium.png` | `sq.pl.spatial_scatter(color=["AREG","MET"], img=False)` | Step 9 |
-| 9 | `areg_morphology_xenium.png` | `spatialdata_plot` render loop — AREG output | Step 10 |
-| 10 | `met_morphology_xenium.png` | `spatialdata_plot` render loop — MET output | Step 10 |
-| 11 | `napari_areg_xenium.png` | Screenshot of napari viewer | Step 11 |
 
 ---
 
