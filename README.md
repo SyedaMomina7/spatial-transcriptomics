@@ -130,14 +130,50 @@ Unlike Visium (spot-based), Xenium provides **near single-cell resolution**, ena
 ##  Repository Structure
 
 ```
-Spatial-Transcriptomics-Complete-Pipeline/
-│
-├── README.md
-├── assets/
-├── 01_Scanpy_Spatial_Basic/
-├── 02_Squidpy_Visium_Fluorescence/
-├── 03_Squidpy_Visium_HnE/
-├── 04_Squidpy_Xenium/
+## 📁 Repository Structure
+
+spatial-transcriptomics/
+├── 01-scanpy_spatial/
+│   ├── visuals/
+│   │   ├── 1st_spatial_scanpy.png
+│   │   ├── 2nd_spatial_scanpy.png
+│   │   ├── cluster_marker_genes_scanpy.png
+│   │   ├── gene_by_count_scanpy.png
+│   │   ├── marker_spatial_cluster1_scanpy.png
+│   │   ├── marker_spatial2.png
+│   │   ├── spatial_cluster_scanpy.png
+│   │   └── umap_scanpy.png
+│   ├── Analysis_and_visualization_of_spatial_transcriptomics_data.ipynb
+│   └── readme.md
+├── 02-Visium_fluorescence/
+│   ├── visuals/
+│   │   ├── Feature_Types_Comparison_flu.png
+│   │   ├── Fluorescence_Channels.png
+│   │   ├── features_vs_clusters_flu.png
+│   │   ├── img_seg_flu.png
+│   │   └── spatial_cluster_flu.png
+│   ├── Analyze_Visium_fluorescence_data.ipynb
+│   └── readme.md
+├── 03-Visium_HnE/
+│   ├── visuals/
+│   │   ├── Co-occurrence_Heatmap_hne.png
+│   │   ├── Gene_vs_Image_Clustering_hne.png
+│   │   ├── moron.png
+│   │   ├── spatial_cluster_hne.png
+│   │   └── spatial_cluster_map_hne.png
+│   ├── Analyze_Visium_HnE_data.ipynb
+│   └── readme.md
+└── 04-Xenium_data/
+    ├── visuals/
+    │   ├── QC_distributions_histogram_X.png
+    │   ├── UMAP_Total_Counts_Leiden_Clusters_X.png
+    │   ├── spatial_cluster_X.png
+    │   ├── subsample_cluster_X.png
+    │   ├── Neighborhood_Enrichment_Heatmap_X.png
+    │   ├── morphology_image_X.png
+    │   └── 2nd_last.png
+    ├── Xenium_data_.ipynb
+    └── Readme.md
 ```
 
 ---
