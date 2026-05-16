@@ -27,7 +27,27 @@ This repository presents a **complete end-to-end spatial transcriptomics pipelin
 * Understand spatial clustering, neighborhood interactions, and tissue structure
 
 ---
+## 📂 Repository Notebooks (Google Drive)
 
+Because the notebook files are too large for standard GitHub hosting, the complete, fully executed code for each workflow is hosted on Google Drive. Click the links below to view or download the notebooks:
+
+### 1️⃣ Scanpy Spatial Basics
+* **Key Focus:** Preprocessing, clustering, UMAP visualization, and the spatial mapping of clusters.
+* **Notebook Link:**  
+
+### 2️⃣ Visium Fluorescence (Squidpy)
+* **Key Focus:** Building spatial neighbor graphs, integrating fluorescence images, and calculating spatial statistics.
+* **Notebook Link:**  https://drive.google.com/file/d/1AMjUlx_mvhJJVRVUbAXzUhzZjCTs0h31/view?usp=sharing
+
+### 3️⃣ Visium H&E Analysis
+* **Key Focus:** Histology image integration, overlaying gene expression onto tissue morphology, and analyzing morphology vs. expression.
+* **Notebook Link:**  https://colab.research.google.com/drive/1ZohjVWH_P6glglv0pV3TcTu4canq03NJ?usp=sharing
+
+### 4️⃣ Xenium Analysis
+* **Key Focus:** High-resolution/subcellular spatial transcriptomics, advanced spatial mapping, neighborhood enrichment, and Moran's I autocorrelation.
+* **Notebook Link:**  https://colab.research.google.com/drive/1IM4EaFxoe7CFu1i6sHOTw2XhVJMB6ZaS?usp=sharing 
+
+---
 ## Tools & Technologies
 
 | Tool       | Purpose                                                  |
