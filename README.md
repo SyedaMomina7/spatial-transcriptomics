@@ -33,7 +33,7 @@ Because the notebook files are too large for standard GitHub hosting, the comple
 
 ### 1️⃣ Scanpy Spatial Basics
 * **Key Focus:** Preprocessing, clustering, UMAP visualization, and the spatial mapping of clusters.
-* **Notebook Link:**  
+* **Notebook Link:**  https://drive.google.com/file/d/1hrmYHajd5go5mFjOPlOJQQ9IRhPvVR2u/view?usp=sharing
 
 ### 2️⃣ Visium Fluorescence (Squidpy)
 * **Key Focus:** Building spatial neighbor graphs, integrating fluorescence images, and calculating spatial statistics.
